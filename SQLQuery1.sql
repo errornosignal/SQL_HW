@@ -45,27 +45,41 @@
 
 
 --JOINS
+--SELECT LastName, FirstName, OrderID, OrderDate
+--FROM Employees JOIN Orders ON
+--Employees.EmployeeID = Orders.EmployeeID
+--WHERE LastName = 'Peacock';
 
-SELECT LastName, FirstName, OrderID, OrderDate
-FROM Employees JOIN Orders ON
-Employees.EmployeeID = Orders.EmployeeID
-WHERE LastName = 'Peacock';
+--SELECT LastName, FirstName, OrderID, OrderDate
+--FROM Employees, Orders
+--WHERE Employees.EmployeeID = Orders.EmployeeID AND
+--LastName = 'Peacock'
+
+--SELECT OrderID, OD.UnitPrice, ProductName
+--FROM [Order Details] AS OD JOIN Products AS P
+--ON OD.ProductID = P.ProductID
+--WHERE OrderID = 10250;
+
+--SELECT OD.OrderID, OD.UnitPrice, ProductName, E.EmployeeID, LastName, FirstName
+--FROM [Order Details] AS OD JOIN Products AS P
+--ON OD.ProductID = P.ProductID JOIN Orders AS O
+--ON OD.OrderID = O.OrderID JOIN Employees AS E
+--ON O.EmployeeID = E.EmployeeID
+--WHERE O.OrderID = 10250;
 
 
-SELECT LastName, FirstName, OrderID, OrderDate
-FROM Employees, Orders
-WHERE Employees.EmployeeID = Orders.EmployeeID AND
-LastName = 'Peacock';
+--SELECT E.EmployeeID, O.OrderID, E.LastName, E.FirstName
+--FROM Employees AS E LEFT JOIN Orders AS O
+--ON E.EmployeeID = O.EmployeeID
+--WHERE O.OrderID IS NULL;
 
+--SELECT Workers.EmployeeID, Workers.LastName, Workers.FirstName, Workers.ReportsTo,
+--		Managers.EmployeeID Managers, Managers.LastName, Managers.FirstName
+--FROM Employees AS Managers JOIN Employees AS Workers
+--ON Managers.EmployeeID = Workers.ReportsTo
 
-SELECT OrderID, OD.UnitPrice, ProductName
-FROM [Order Details] AS OD JOIN Products AS P
-ON OD.ProductID = P.ProductID
-WHERE OrderID = 10250;
+--SELECT CompanyName, ProductName
+--FROM Suppliers AS S LEFT JOIN  Products AS P
+--ON S.SupplierID = P.SupplierID
+--WHERE P.ProductID IS NULL;
 
-SELECT OD.OrderID, OD.UnitPrice, ProductName, E.EmployeeID, LastName, FirstName
-FROM [Order Details] AS OD JOIN Products AS P
-ON OD.ProductID = P.ProductID JOIN Orders AS O
-ON OD.OrderID = O.OrderID JOIN Employees AS E
-ON O.EmployeeID = E.EmployeeID
-WHERE O.OrderID = 10250;
