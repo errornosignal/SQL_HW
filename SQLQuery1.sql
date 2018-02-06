@@ -22,7 +22,6 @@
 --SELECT * 
 --FROM Products;
 
-
 --SELECT ProductName, UnitPrice, UnitsInStock, UnitPrice * UnitsInStock AS 'Total Value'
 --FROM Products
 --WHERE UnitsInStock > 0
@@ -36,15 +35,14 @@
 --WHERE OrderDate >= '1996-07-01' AND
 --	  OrderDate < '1996-08-01';
 
-
 --SELECT EmployeeID, LastName, FirstName
 --FROM Employees;
 
 --SELECT OrderID, OrderDate
 --FROM Orders;
 
-
---JOINS
+-------------------------------------------------------------------
+----JOINS
 --SELECT LastName, FirstName, OrderID, OrderDate
 --FROM Employees JOIN Orders ON
 --Employees.EmployeeID = Orders.EmployeeID
@@ -67,7 +65,6 @@
 --ON O.EmployeeID = E.EmployeeID
 --WHERE O.OrderID = 10250;
 
-
 --SELECT E.EmployeeID, O.OrderID, E.LastName, E.FirstName
 --FROM Employees AS E LEFT JOIN Orders AS O
 --ON E.EmployeeID = O.EmployeeID
@@ -82,4 +79,33 @@
 --FROM Suppliers AS S LEFT JOIN  Products AS P
 --ON S.SupplierID = P.SupplierID
 --WHERE P.ProductID IS NULL;
+
+--SELECT City, CompanyName, ContactName, 'Customer' AS Relationship
+--FROM Customers
+--UNION
+--SELECT City, CompanyName, ContactName, 'Supplier' AS Relationship
+--FROM Suppliers
+--ORDER BY City, CompanyName;
+
+
+----ONLY FOR INNER JOINS
+----EXPLICIT SYNTAX
+--SELECT ProductName, Discontinued, CategoryName
+--FROM Products AS P JOIN Categories AS C
+--ON P.CategoryID = C.CategoryID
+--WHERE Discontinued = 'True'
+--ORDER BY C.CategoryName;
+
+----IMPLICIT SYNTAX
+--SELECT ProductName,Discontinued, CategoryName
+--FROM Products AS P, Categories AS C
+--WHERE p.CategoryID = C.CategoryID AND P.Discontinued = 'True'
+---------------------------------------------------------------------
+
+--SELECT OrderID,  P.ProductID, ProductName, OD.Quantity, OD. UnitPrice, OD.Quantity * OD.UnitPrice AS 'Total'
+--FROM Products AS P JOIN [Order Details] AS OD
+--ON P.ProductID = OD.ProductID
+--ORDER BY OD.OrderID, ProductID
+----WHERE OrderID IS NULL
+
 
