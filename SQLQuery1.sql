@@ -108,4 +108,40 @@
 --ORDER BY OD.OrderID, ProductID
 ----WHERE OrderID IS NULL
 
+--SELECT * FROM Products
+
+--SELECT DISTINCT E.FirstName + ' ' +  E.LastName AS 'Employee Name', P.ProductName, P.ProductID, OD.OrderID, O.CustomerID,
+--C.CompanyName, C.ContactName, E.EmployeeID
+--FROM Products AS P JOIN [Order Details] AS OD
+--ON P.ProductID = OD.ProductID JOIN Orders AS O
+--ON OD.OrderID = O.OrderID JOIN Customers AS C
+--ON O.CustomerID = C.CustomerID JOIN Employees AS E
+--ON O.EmployeeID = E.EmployeeID
+--WHERE ProductName = 'Tofu';
+
+
+SELECT * --DISTINCT E.FirstName + ' ' +  E.LastName AS 'Employee Name', P.ProductName, P.ProductID, OD.OrderID, O.CustomerID, C.CompanyName, C.ContactName, E.EmployeeID
+FROM Products AS P FULL OUTER JOIN [Order Details] AS OD
+ON P.ProductID = OD.ProductID  FULL OUTER JOIN Orders AS O
+ON OD.OrderID = O.OrderID FUll OUTER JOIN Customers AS C
+ON O.CustomerID = C.CustomerID FUll OUTER JOIN Employees AS E
+ON O.EmployeeID = E.EmployeeID
+WHERE ProductName = 'Tofu' --AND O.OrderID = 0;
+ORDER BY ProductName
+
+
+
+
+----GET 3 employees that did not sell tofu
+--SELECT E.FirstName + ' ' + E.LastName AS 'Employee Name', P.ProductName
+--FROM Employees AS E JOIN Orders AS O
+--ON E.EmployeeID = O.EmployeeID JOIN [Order Details] AS OD
+--ON O.OrderID = OD.OrderID JOIN Products AS P 
+--ON OD.ProductID = P.ProductID
+--WHERE 
+--ORDER BY P.ProductName, [Employee Name]
+
+
+
+
 
