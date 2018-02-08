@@ -112,22 +112,103 @@
 
 --SELECT DISTINCT E.FirstName + ' ' +  E.LastName AS 'Employee Name', P.ProductName, P.ProductID, OD.OrderID, O.CustomerID,
 --C.CompanyName, C.ContactName, E.EmployeeID
+--FROM Products AS P FULL OUTER JOIN [Order Details] AS OD
+--ON P.ProductID = OD.ProductID FULL OUTER JOIN Orders AS O
+--ON OD.OrderID = O.OrderID FULL OUTER JOIN Customers AS C
+--ON O.CustomerID = C.CustomerID FULL OUTER JOIN Employees AS E
+--ON O.EmployeeID = E.EmployeeID
+--WHERE ProductName = 'Tofu' AND E.FirstName IS NULL
+--Order By [Employee Name]
+
+
+--SELECT DISTINCT E.FirstName + ' ' +  E.LastName AS 'Employee Name', P.ProductName, P.ProductID, OD.OrderID, O.CustomerID, E.EmployeeID
 --FROM Products AS P JOIN [Order Details] AS OD
---ON P.ProductID = OD.ProductID JOIN Orders AS O
+--ON P.ProductID = OD.ProductID  JOIN Orders AS O
 --ON OD.OrderID = O.OrderID JOIN Customers AS C
 --ON O.CustomerID = C.CustomerID JOIN Employees AS E
 --ON O.EmployeeID = E.EmployeeID
---WHERE ProductName = 'Tofu';
+--WHERE ProductName = 'Tofu'
+--EXCEPT
+--Select E.FirstName + ' ' +  E.LastName AS 'Employee Name', P.ProductName, P.ProductID, OD.OrderID, O.CustomerID, E.EmployeeID
+--FROM Employees AS E JOIN Orders AS O
+--ON E.EmployeeID = O.EmployeeID Join [Order Details] AS OD
+--ON O.OrderID = OD.OrderID JOIN Products AS P
+--ON OD.ProductID = P.ProductID
+--ORDER BY ProductName, [Employee Name]
 
 
-SELECT * --DISTINCT E.FirstName + ' ' +  E.LastName AS 'Employee Name', P.ProductName, P.ProductID, OD.OrderID, O.CustomerID, C.CompanyName, C.ContactName, E.EmployeeID
-FROM Products AS P FULL OUTER JOIN [Order Details] AS OD
-ON P.ProductID = OD.ProductID  FULL OUTER JOIN Orders AS O
-ON OD.OrderID = O.OrderID FUll OUTER JOIN Customers AS C
-ON O.CustomerID = C.CustomerID FUll OUTER JOIN Employees AS E
-ON O.EmployeeID = E.EmployeeID
-WHERE ProductName = 'Tofu' --AND O.OrderID = 0;
-ORDER BY ProductName
+
+--Select E.FirstName + ' ' +  E.LastName AS 'Employee Name', P.ProductName, P.ProductID, OD.OrderID, O.CustomerID, E.EmployeeID
+--FROM Employees AS E JOIN Orders AS O
+--ON E.EmployeeID = O.EmployeeID Join [Order Details] AS OD
+--ON O.OrderID = OD.OrderID JOIN Products AS P
+--ON OD.ProductID = P.ProductID
+
+
+--SELECT DISTINCT E.FirstName + ' ' +  E.LastName AS 'Employee Name', P.ProductName, P.ProductID, OD.OrderID, O.CustomerID, E.EmployeeID
+--FROM Products AS P JOIN [Order Details] AS OD
+--ON P.ProductID = OD.ProductID  JOIN Orders AS O
+--ON OD.OrderID = O.OrderID JOIN Customers AS C
+--ON O.CustomerID = C.CustomerID JOIN Employees AS E
+--ON O.EmployeeID = E.EmployeeID
+--WHERE ProductName = 'Tofu'(Select E.FirstName + ' ' +  E.LastName AS 'Employee Name' FROM Employees AS E)
+----ORDER BY P.ProductName, [Employee Name]
+
+--SELECT C.CustomerId, C.ContactName
+--FROM  Customers AS C LEFT JOIN Orders AS O 
+--ON O.CustomerId = C.CustomerId
+--WHERE OrderId IS NULL
+
+--SELECT Distinct E.FirstName + ' ' + E.LastName AS [Employee Name], P.ProductName, P.ProductID, O.OrderID
+--FROM Employees AS E LEFT JOIN Orders AS O
+--ON E.EmployeeID = O.EmployeeID Join [Order Details] AS OD
+--ON O.OrderID = OD.OrderID JOIN Products AS P
+--ON OD.ProductID = P.ProductID
+--WHERE ProductName = 'Tofu'
+--Order By [Employee Name]
+
+--SELECT E.FirstName + ' ' + E.LastName AS [Employee Name]
+--FROM Products AS P Join [Order Details] AS OD
+--ON P.ProductID = OD.ProductID JOIN Orders AS O
+--ON OD.OrderID = O.OrderID JOIN Employees AS E
+--ON O.EmployeeID = E.EmployeeID
+--EXCEPT
+--SELECT DISTINCT E.FirstName + ' ' + E.LastName AS [Employee Name] 
+--FROM Products AS P Join [Order Details] AS OD
+--ON P.ProductID = OD.ProductID JOIN Orders AS O
+--ON OD.OrderID = O.OrderID JOIN Employees AS E
+--ON O.EmployeeID = E.EmployeeID
+--WHERE ProductName = 'Tofu'
+
+--SELECT Distinct E.FirstName + ' ' + E.LastName AS [Employee Name]
+--FROM Products AS P Join [Order Details] AS OD
+--ON P.ProductID = OD.ProductID JOIN Orders AS O
+--ON OD.OrderID = O.OrderID JOIN Employees AS E
+--ON O.EmployeeID = E.EmployeeID
+--Order BY [Employee Name]
+
+
+--SELECT DISTINCT E.LastName + ', ' + E.FirstName AS 'Employee'
+--FROM Products AS P JOIN [Order Details] AS OD
+--ON P.ProductID = OD.ProductID JOIN Orders AS O
+--ON OD.OrderID = O.OrderID AND P.ProductName = 'Tofu' RIGHT JOIN Employees AS E
+--ON O.EmployeeID = E.EmployeeID  
+--WHERE O.OrderID IS NULL​
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -141,7 +222,11 @@ ORDER BY ProductName
 --WHERE 
 --ORDER BY P.ProductName, [Employee Name]
 
-
-
+--SELECT FirstName + ' ' + LastName AS 'Employee Name', O.OrderID, O.OrderDate, P.ProductID, P.ProductName
+--FROM Employees AS E JOIN Orders AS O
+--ON E.EmployeeID = O.EmployeeID Join [Order Details] AS OD
+--ON O.OrderID = OD.OrderID JOIN Products AS P
+--ON OD.ProductID = P.ProductID
+--Order By OrderID
 
 
