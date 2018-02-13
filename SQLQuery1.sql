@@ -112,77 +112,87 @@
 
 --SELECT DISTINCT E.FirstName + ' ' +  E.LastName AS 'Employee Name', P.ProductName, P.ProductID, OD.OrderID, O.CustomerID,
 --C.CompanyName, C.ContactName, E.EmployeeID
+--FROM Products AS P FULL OUTER JOIN [Order Details] AS OD
+--ON P.ProductID = OD.ProductID FULL OUTER JOIN Orders AS O
+--ON OD.OrderID = O.OrderID FULL OUTER JOIN Customers AS C
+--ON O.CustomerID = C.CustomerID FULL OUTER JOIN Employees AS E
+--ON O.EmployeeID = E.EmployeeID
+--WHERE ProductName = 'Tofu' AND E.FirstName IS NULL
+--Order By [Employee Name]
+
+
+--SELECT DISTINCT E.FirstName + ' ' +  E.LastName AS 'Employee Name', P.ProductName, P.ProductID, OD.OrderID, O.CustomerID, E.EmployeeID
 --FROM Products AS P JOIN [Order Details] AS OD
---ON P.ProductID = OD.ProductID JOIN Orders AS O
+--ON P.ProductID = OD.ProductID  JOIN Orders AS O
 --ON OD.OrderID = O.OrderID JOIN Customers AS C
 --ON O.CustomerID = C.CustomerID JOIN Employees AS E
 --ON O.EmployeeID = E.EmployeeID
---WHERE ProductName = 'Tofu';
+--WHERE ProductName = 'Tofu'
+--EXCEPT
+--Select E.FirstName + ' ' +  E.LastName AS 'Employee Name', P.ProductName, P.ProductID, OD.OrderID, O.CustomerID, E.EmployeeID
+--FROM Employees AS E JOIN Orders AS O
+--ON E.EmployeeID = O.EmployeeID Join [Order Details] AS OD
+--ON O.OrderID = OD.OrderID JOIN Products AS P
+--ON OD.ProductID = P.ProductID
+--ORDER BY ProductName, [Employee Name]
 
 
---SELECT * --DISTINCT E.FirstName + ' ' +  E.LastName AS 'Employee Name', P.ProductName, P.ProductID, OD.OrderID, O.CustomerID, C.CompanyName, C.ContactName, E.EmployeeID
---FROM Products AS P FULL OUTER JOIN [Order Details] AS OD
---ON P.ProductID = OD.ProductID  FULL OUTER JOIN Orders AS O
---ON OD.OrderID = O.OrderID FUll OUTER JOIN Customers AS C
---ON O.CustomerID = C.CustomerID FUll OUTER JOIN Employees AS E
+
+--Select E.FirstName + ' ' +  E.LastName AS 'Employee Name', P.ProductName, P.ProductID, OD.OrderID, O.CustomerID, E.EmployeeID
+--FROM Employees AS E JOIN Orders AS O
+--ON E.EmployeeID = O.EmployeeID Join [Order Details] AS OD
+--ON O.OrderID = OD.OrderID JOIN Products AS P
+--ON OD.ProductID = P.ProductID
+
+
+--SELECT DISTINCT E.FirstName + ' ' +  E.LastName AS 'Employee Name', P.ProductName, P.ProductID, OD.OrderID, O.CustomerID, E.EmployeeID
+--FROM Products AS P JOIN [Order Details] AS OD
+--ON P.ProductID = OD.ProductID  JOIN Orders AS O
+--ON OD.OrderID = O.OrderID JOIN Customers AS C
+--ON O.CustomerID = C.CustomerID JOIN Employees AS E
 --ON O.EmployeeID = E.EmployeeID
---WHERE ProductName = 'Tofu' --AND O.OrderID = 0;
---ORDER BY ProductName
+--WHERE ProductName = 'Tofu'(Select E.FirstName + ' ' +  E.LastName AS 'Employee Name' FROM Employees AS E)
+----ORDER BY P.ProductName, [Employee Name]
 
+--SELECT C.CustomerId, C.ContactName
+--FROM  Customers AS C LEFT JOIN Orders AS O 
+--ON O.CustomerId = C.CustomerId
+--WHERE OrderId IS NULL
 
-
-
-----GET 3 employees that did not sell tofu
---SELECT E.FirstName + ' ' + E.LastName AS 'Employee Name', P.ProductName
---FROM Employees AS E JOIN Orders AS O
---ON E.EmployeeID = O.EmployeeID JOIN [Order Details] AS OD
---ON O.OrderID = OD.OrderID JOIN Products AS P 
---ON OD.ProductID = P.ProductID
---WHERE 
---ORDER BY P.ProductName, [Employee Name]
-
-
---SELECT* FROM Orders;
-
---SELECT Count(OrderID) AS 'Total Orders'
---FROM Orders
---WHERE OrderDate > '1996-06-30' AND OrderDate < '1996-08-01';
-
---SELECT OrderID, ProductID, COUNT(ProductID) AS 'Unique Items', SUM(Quantity) AS 'Total Items'
---FROM [Order Details]
---GROUP BY OrderID, ProductID with CUBE
---HAVING SUM(Quantity) > 3
-
---SELECT OrderID, COUNT(ProductID) AS 'Total'
---FROM [Order Details]
---GROUP BY OrderID
---HAVING COUNT(ProductID) < 3;
-
-
-
---SELECT Distinct E.FirstName + ' ' + E.LastName AS 'Employee Name', E.EmployeeID, SUM(OD.UnitPrice * OD.Quantity) AS 'Total'
---FROM Employees AS E JOIN Orders AS O
---ON E.EmployeeID = O.EmployeeID JOIN [Order Details] AS OD
---ON O.OrderID = OD.OrderID JOIN Products AS P
---ON OD.ProductId  = P.ProductID
---Group By  E.EmployeeID, E.FirstName + ' ' + E.LastName
---Having  P.ProductName = 'Tofu'
---ORDER BY [Employee Name]
-
-
---SELECT P.ProductName, P. ProductID, COUNT(O.OrderID) AS 'Total Orders'
---FEOM Orders AS O JOIN 
---ON E.EmployeeID = O.EmployeeID JOIN [Order Details] AS OD
---ON O.OrderID = OD.OrderID JOIN Products AS P 
---ON OD.ProductID = P.ProductID
---WHERE P.ProductName = 'Tofu'
---GROUP BY P.ProductName, P. ProductID
-
-
---SELECT P.ProductID, P.ProductName, SUM(OD.UnitPrice * OD.Quantity) AS 'Total'
---FROM Orders AS O JOIN [Order Details] AS OD
+---------------------------------TOFU SUBMIT------------------------
+--SELECT Distinct E.FirstName + ' ' + E.LastName AS [Employee Name], P.ProductName, P.ProductID, O.OrderID
+--FROM Employees AS E LEFT JOIN Orders AS O
+--ON E.EmployeeID = O.EmployeeID Join [Order Details] AS OD
 --ON O.OrderID = OD.OrderID JOIN Products AS P
 --ON OD.ProductID = P.ProductID
---GROUP BY P.ProductID, P.ProductName
---Having SUM(OD.UnitPrice * OD.Quantity) < 5000
---Order BY Total
+--WHERE ProductName = 'Tofu'
+--Order By [Employee Name]
+
+--SELECT E.FirstName + ' ' + E.LastName AS [Employee Name]
+--FROM Products AS P Join [Order Details] AS OD
+--ON P.ProductID = OD.ProductID JOIN Orders AS O
+--ON OD.OrderID = O.OrderID JOIN Employees AS E
+--ON O.EmployeeID = E.EmployeeID
+--EXCEPT
+--SELECT DISTINCT E.FirstName + ' ' + E.LastName AS [Employee Name] 
+--FROM Products AS P Join [Order Details] AS OD
+--ON P.ProductID = OD.ProductID JOIN Orders AS O
+--ON OD.OrderID = O.OrderID JOIN Employees AS E
+--ON O.EmployeeID = E.EmployeeID
+--WHERE ProductName = 'Tofu'
+
+--SELECT Distinct E.FirstName + ' ' + E.LastName AS [Employee Name]
+--FROM Products AS P Join [Order Details] AS OD
+--ON P.ProductID = OD.ProductID JOIN Orders AS O
+--ON OD.OrderID = O.OrderID JOIN Employees AS E
+--ON O.EmployeeID = E.EmployeeID
+--Order BY [Employee Name]
+
+--SELECT DISTINCT E.LastName + ', ' + E.FirstName AS 'Employee'
+--FROM Products AS P JOIN [Order Details] AS OD
+--ON P.ProductID = OD.ProductID JOIN Orders AS O
+--ON OD.OrderID = O.OrderID AND P.ProductName = 'Tofu' RIGHT JOIN Employees AS E
+--ON O.EmployeeID = E.EmployeeID  
+--WHERE O.OrderID IS NULL​
+------------------------------------END OF TOFU SUBMIT----------------
+
