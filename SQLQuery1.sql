@@ -196,3 +196,117 @@
 --WHERE O.OrderID IS NULL​
 ------------------------------------END OF TOFU SUBMIT----------------
 
+--use Northwind;
+
+--SELECT * 
+--FROM Orders;
+
+--SELECT ShipCountry, COUNT(OrderID) AS 'Total Orders'
+--FROM Orders
+--GROUP BY ShipCountry
+--HAVING COUNT(OrderID) < 50
+--ORDER BY 'Total Orders' DESC;
+
+--SELECT * FROM Products;
+
+--SELECT P.ProductName, SUM(OD.Quantity) AS 'Total Sold',
+--COUNT(OD.OrderID) AS 'Total Orders', AVG(OD.Quantity) AS 'Average Sold'
+--FROM Products AS P, [Order Details] AS OD
+--WHERE P.ProductID = OD.ProductID AND
+--P.ProductID = 17
+--GROUP BY P.ProductName;
+
+--SELECT P.ProductName, SUM(OD.Quantity) AS 'Total Sold',
+--COUNT(OD.OrderID) AS 'Total Orders', AVG(OD.Quantity) AS 'Average Sold'
+--FROM Products AS P, [Order Details] AS OD
+--WHERE P.ProductID = OD.ProductID AND
+--P.Discontinued = 'False'
+--GROUP BY P.ProductName WITH ROLLUP;
+
+--SELECT COUNT(ProductID) FROM Products WHERE Discontinued = 'True';
+
+--SELECT * FROM Shippers;
+
+--SELECT S.CompanyName, COUNT(O.OrderID) AS 'Total Orders'
+--FROM Shippers AS S JOIN Orders AS O
+--ON S.ShipperID = O.ShipVia
+--GROUP BY S.CompanyName WITH ROLLUP;
+
+--SELECT COUNT(OrderID) FROM Orders;
+
+--SELECT E.FirstName + ' ' + E.LastName AS 'Employee Name', 
+--SUM(OD.UnitPrice * OD.Quantity) AS 'Total Sold', COUNT(DISTINCT O.OrderID)
+--FROM Employees AS E JOIN Orders AS O 
+--ON E.EmployeeID = O.EmployeeID JOIN [Order Details] AS OD
+--ON O.OrderID = OD.OrderID
+--GROUP BY E.FirstName + ' ' + E.LastName WITH ROLLUP;
+
+--use Northwind;
+
+--SELECT * 
+--FROM Customers;
+
+--SELECT O.OrderID
+--FROM Orders AS O, Customers AS C
+--WHERE O.CustomerID = C.CustomerID AND C.Phone = '030-0074321';
+
+--SELECT OrderID 
+--FROM Orders
+--WHERE CustomerID = (
+--	SELECT CustomerID 
+--	FROM Customers
+--	WHERE Phone = '030-0074321');
+
+--SELECT ProductName
+--FROM Products
+--WHERE CategoryID = (
+--	SELECT CategoryID
+--	FROM Categories
+--	WHERE CategoryName = 'Seafood');
+
+--SELECT OrderID 
+--FROM Orders
+--WHERE CustomerID IN (
+--	SELECT CustomerID 
+--	FROM Customers
+--	WHERE City = 'London');
+
+--SELECT City 
+--FROM Employees;
+
+--SELECT ShipCity
+--FROM Orders;
+
+--SELECT O.OrderID 
+--FROM Orders AS O
+--WHERE EmployeeID IN (
+--	SELECT EmployeeID 
+--	FROM Employees AS E
+--	WHERE O.ShipCity = E.City);
+
+--SELECT OrderID
+--FROM Orders
+--WHERE OrderID IN (
+--	SELECT OrderID 
+--	FROM [Order Details]
+--	WHERE ProductID = (
+--		SELECT ProductID
+--		FROM Products
+--		WHERE ProductName = 'Tofu'));
+
+---- We want a report of all Order ID Where the customer did not
+---- purchase more than 10% of the average quantity sold for a given
+---- product. 
+--SELECT OD.OrderID
+--FROM [Order Details] as OD
+--WHERE Quantity < (
+--	SELECT AVG(Quantity) * .1 
+--	FROM [Order Details]
+--	WHERE OD.ProductID = ProductID);
+
+--SELECT * 
+--FROM Products
+--WHERE UnitPrice > ANY (
+--	SELECT MAX(UnitPrice) AS 'Max Price'
+--	FROM Products
+--	GROUP BY CategoryID);
