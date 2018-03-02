@@ -53,6 +53,7 @@ use MyGuitarShop;
 	--address and the largest order for that customer. To do this, you can group the
 	--result set by the EmailAddress column.
 	--9 Records
+
 	SELECT C.EmailAddress, MAX([Order Total]) AS 'Largest Order'
 	FROM Customers AS C JOIN  Orders AS O
 	ON C.CustomerID = O.CustomerID JOIN 
@@ -62,6 +63,18 @@ use MyGuitarShop;
 		ON O.OrderID = OI.OrderID) AS L
 	ON L.OrderId = O.OrderID
 	GROUP BY C.EmailAddress
+
+	--Suggested by Shane:
+	--SELECT EmailAddress, MAX(OrderTotal) AS MaxOrderTotal
+	--FROM
+	--(
+	--  SELECT EmailAddress, o.OrderID, SUM((ItemPrice - DiscountAmount) * Quantity) AS OrderTotal
+	--  FROM Customers c
+	--    JOIN Orders o ON c.CustomerID = o.CustomerID
+	--    JOIN OrderItems oi ON o.OrderID = oi.OrderID
+	--  GROUP BY EmailAddress, o.OrderID
+	--) IC
+	--GROUP BY EmailAddress, OrderID​
 
 --5. Write a SELECT statement that returns the name and discount percent of each
 	--product that has a unique discount percent. In other words, don’t include
@@ -80,7 +93,7 @@ use MyGuitarShop;
 	--customer’s oldest order (the one with the earliest date). Each row should
 	--include these three columns: EmailAddress, OrderID, and OrderDate.
 	--7 Records
-	SELECT Distinct EmailAddress, OrderID, OrderDate
+	SELECT EmailAddress, OrderID, OrderDate
 	FROM Customers AS C JOIN Orders AS O_main
 	ON C.CustomerID = O_main.CustomerID
 	WHERE OrderDate =
