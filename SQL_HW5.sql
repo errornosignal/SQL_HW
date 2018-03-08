@@ -17,15 +17,35 @@ use MyGuitarShop;
 --Code the INSERT statement so SQL Server automatically generates the value for
 --the CategoryID column.
 
+INSERT INTO Categories (CategoryName)  VALUES ('Brass');
+
+SELECT CategoryID, CategoryName
+FROM Categories
+WHERE CategoryName = 'Brass'
+
 
 --2. Write an UPDATE statement that modifies the row you just added to the
 --Categories table. This statement should change the CategoryName column to
 --“Woodwinds”, and it should use the CategoryID column to identify the row.
 
+UPDATE Categories
+SET CategoryName = 'Woodwinds'
+WHERE CategoryID = 5;
+
+SELECT CategoryID, CategoryName
+FROM Categories
+WHERE CategoryID = 5;
+
 
 --3. Write a DELETE statement that deletes the row you added to the Categories table
 --in exercise 1. This statement should use the CategoryID column to identify the
 --row.
+
+DELETE Categories
+WHERE CategoryID = 5;
+
+SELECT CategoryID, CategoryName
+FROM Categories
 
 
 --4. Write an INSERT statement that adds this row to the Products table:
@@ -41,15 +61,47 @@ use MyGuitarShop;
 
 --Use a column list for this statement.
 
+INSERT INTO Products (CategoryID, ProductCode, ProductName,
+						Description, ListPrice, DiscountPercent, DateAdded)
+VALUES (4, 'dgx_640', 'Yamaha DGX 640 88-Key Digital Piano', 'Long description to come.',
+		799.99, 0, SYSDATETIME());
+
+SELECT ProductID,CategoryID, ProductCode, ProductName, Description, ListPrice,
+		DiscountPercent, DateAdded
+FROM Products
+WHERE CategoryID = 4;
+
 
 --5. Write an UPDATE statement that modifies the product you added in exercise 4.
 --This statement should change the DiscountPercent column from 0% to 35%.
+
+UPDATE Products
+SET DiscountPercent = 35
+WHERE ProductID = 11;
+
+SELECT ProductID, DiscountPercent
+FROM Products
+WHERE ProductID = 11;
 
 
 --6. Write a DELETE statement that deletes the row in the Categories table that has
 --an ID of 4. When you execute this statement, it will produce an error since the
 --category has related rows in the Products table. To fix that, precede the
 --DELETE statement with another DELETE statement that deletes all products in this category.
+
+DELETE FROM Products
+WHERE CategoryID = 4;
+DELETE FROM Categories
+WHERE CategoryID = 4;
+
+SELECT ProductID, CategoryID, ProductCode, ProductName,
+		Description, ListPrice, DiscountPercent, DateAdded
+FROM Products
+WHERE CategoryID = 4;
+
+SELECT CategoryID, CategoryName
+FROM Categories
+WHERE CategoryID = 4;
 
 
 --7. Write an INSERT statement that adds this row to the Customers table:
@@ -61,13 +113,34 @@ use MyGuitarShop;
 
 --Use a column list for this statement.
 
+INSERT INTO Customers(EmailAddress, Password, FirstName, LastName)
+VALUES ('rick@raven.com', '', 'Rick', 'Raven');
+
+SELECT CustomerID, EmailAddress, Password, FirstName, LastName
+FROM Customers
+WHERE EmailAddress = 'rick@raven.com';
+
 
 --8. Write an UPDATE statement that modifies the Customers table. Change the
 --password column to “secret” for the customer with an email address of rick@raven.com.
 
+UPDATE Customers
+SET Password = 'secret'
+WHERE EmailAddress = 'rick@raven.com';
+
+SELECT EmailAddress, Password
+FROM Customers
+WHERE EMailAddress = 'rick@raven.com';
+
 
 --9. Write an UPDATE statement that modifies the Customers table. Change the
 --password column to “reset” for every customer in the table.
+
+UPDATE Customers
+SET Password = 'secret';
+
+SELECT EmailAddress, Password
+FROM Customers
 
 
 /*
