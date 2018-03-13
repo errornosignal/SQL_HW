@@ -37,7 +37,7 @@ SELECT
 FROM Products;
 
 
---3. Write a SELECT statement that returns these colums from the Orders table:
+--3. Write a SELECT statement that returns these columns from the Orders table:
 --a. A column that uses the CONVERT function to return the OrderDate column
 --in this format: MM/DD/YYYY. In other words, use 2-digit months and
 --days and a 4-digit year, and separate each date component with
