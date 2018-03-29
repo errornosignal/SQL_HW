@@ -43,7 +43,7 @@ FROM Orders;
 
 SELECT OrderID, OrderDate, DATEADD(DAY, 2, OrderDate) AS ApproxShipDate, ShipDate, DATEDIFF(DAY, OrderDate, ShipDate) AS DaysToShip
 From Orders
-WHERE MONTH(OrderDate) = 3 and YEAR(OrderDAte) = '2012';
+WHERE MONTH(OrderDate) = 3 and YEAR(OrderDAte) = '2016';
 
 
 --Submitting your program -
