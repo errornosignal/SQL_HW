@@ -1,16 +1,16 @@
-﻿--Reid Nolan
---Homework 10 – SQL
+﻿----Reid Nolan
+----Homework 10 – SQL
 
 use MyGuitarShop;
 
---1. Write a script that creates and calls a stored procedure
---named spInsertCategory. First, code a statement that creates a procedure that adds
---a new row to the Categories table. To do that, this procedure should have
---one parameter for the category name.
-	--a. Code at least two EXEC statements that test this procedure. (Note that
-	--this table doesn’t allow duplicate category names.)
+----1. Write a script that creates and calls a stored procedure
+----named spInsertCategory. First, code a statement that creates a procedure that adds
+----a new row to the Categories table. To do that, this procedure should have
+----one parameter for the category name.
+--	--a. Code at least two EXEC statements that test this procedure. (Note that
+--	--this table doesn’t allow duplicate category names.)
 
-IF OBJECT_ID('spInsertCategory', 'P') IS NOT NULL
+IF OBJECT_ID('spInsertCategory') IS NOT NULL
 DROP PROC spInsertCategory
 
 GO
@@ -29,13 +29,13 @@ EXECUTE spInsertCategory 'Woodwinds';
 SELECT * FROM Categories
 ORDER BY CategoryID;
 
---2. Write a script that creates and calls a function named fnDiscountPrice that
---calculates the discount price of an item in the OrderItems table (discount
---amount subtracted from item price). To do that, this function should accept
---one parameter for the item ID, and it should return the value of the
---discount price for that item.
+----2. Write a script that creates and calls a function named fnDiscountPrice that
+----calculates the discount price of an item in the OrderItems table (discount
+----amount subtracted from item price). To do that, this function should accept
+----one parameter for the item ID, and it should return the value of the
+----discount price for that item.
 
-IF OBJECT_ID('fnDiscountPrice', 'FN') IS NOT NULL
+IF OBJECT_ID('fnDiscountPrice') IS NOT NULL
 DROP PROC fnDiscountPrice
 
 GO
@@ -67,13 +67,13 @@ END
 
 SELECT * FROM @Result1
 
---3. Write a script that creates and calls a function named fnItemTotal that
---calculates the total amount of an item in the OrderItems table (discount
---price multiplied by quantity). To do that, this function should accept one
---parameter for the item ID, it should use the DiscountPrice function that you
---created in exercise 2, and it should return the value of the total for that item.
+----3. Write a script that creates and calls a function named fnItemTotal that
+----calculates the total amount of an item in the OrderItems table (discount
+----price multiplied by quantity). To do that, this function should accept one
+----parameter for the item ID, it should use the DiscountPrice function that you
+----created in exercise 2, and it should return the value of the total for that item.
 
-IF OBJECT_ID('fnItemTotal', 'FN') IS NOT NULL
+IF OBJECT_ID('fnItemTotal') IS NOT NULL
 DROP PROC fnItemTotal
 
 GO
@@ -105,19 +105,19 @@ END
 
 SELECT * FROM @Result2
 
---4. Write a script that creates and calls a stored procedure named
---spInsertProduct that inserts a row into the Products table. This stored
---procedure should accept five parameters. One parameter for each of these
---columns: CategoryID, ProductCode, ProductName, ListPrice, and DiscountPercent.
-  --a. This stored procedure should set the Description column to an empty
-  --string, and it should set the DateAdded column to the current date.
-  --b. If the value for the ListPrice column is a negative number, the stored
-  --procedure should raise an error that indicates that this column
-  --doesn’t accept negative numbers. Similarly, the procedure should raise
-  --an error if the value for the DiscountPercent column is a negative number.
-  --c. Code at least two EXEC statements that test this procedure.
+----4. Write a script that creates and calls a stored procedure named
+----spInsertProduct that inserts a row into the Products table. This stored
+----procedure should accept five parameters. One parameter for each of these
+----columns: CategoryID, ProductCode, ProductName, ListPrice, and DiscountPercent.
+--  --a. This stored procedure should set the Description column to an empty
+--  --string, and it should set the DateAdded column to the current date.
+--  --b. If the value for the ListPrice column is a negative number, the stored
+--  --procedure should raise an error that indicates that this column
+--  --doesn’t accept negative numbers. Similarly, the procedure should raise
+--  --an error if the value for the DiscountPercent column is a negative number.
+--  --c. Code at least two EXEC statements that test this procedure.
 
-IF OBJECT_ID('spInsertProduct', 'P') IS NOT NULL
+IF OBJECT_ID('spInsertProduct') IS NOT NULL
 DROP PROC spInsertProduct
 
 GO
@@ -137,7 +137,7 @@ END
 GO
 
 BEGIN TRY
-EXECUTE spInsertProduct 2, 'hgh-34','Yamaha 32 MIDI',565,20;
+EXECUTE spInsertProduct 2, 'HGH-34','YAMAHA 32 MIDI',565,20;
 PRINT 'Record sucessfully added to Products Table.';
 END TRY
 BEGIN CATCH
@@ -148,7 +148,7 @@ BEGIN CATCH
 END CATCH
 
 BEGIN TRY
-EXECUTE spInsertProduct 3,'ega-32','Ludwig Snare Drum',-320,-15
+EXECUTE spInsertProduct 3,'EGA-32','LUDWIG SNARE DRUM',-320,-15
 PRINT 'Record sucessfully added to Products Table.';
 END TRY
 BEGIN CATCH
@@ -160,15 +160,15 @@ END CATCH
 
 SELECT * FROM Products
 
---5. Write a script that creates and calls a stored procedure named
---spUpdateProductDiscount that updates the DiscountPercent column in the
---Products table. This procedure should have one parameter for the product ID
---and another for the discount percent.
-  --a. If the value for the DiscountPercent column is a negative number, the
-  --stored procedure should raise an error that indicates that the value for this column must be a positive number.
-  --b. Code at least two EXEC statements that test this procedure.
+----5. Write a script that creates and calls a stored procedure named
+----spUpdateProductDiscount that updates the DiscountPercent column in the
+----Products table. This procedure should have one parameter for the product ID
+----and another for the discount percent.
+--  --a. If the value for the DiscountPercent column is a negative number, the
+--  --stored procedure should raise an error that indicates that the value for this column must be a positive number.
+--  --b. Code at least two EXEC statements that test this procedure.
 
-IF OBJECT_ID('spUpdateProductDiscount', 'P') IS NOT NULL
+IF OBJECT_ID('spUpdateProductDiscount') IS NOT NULL
 DROP PROC spUpdateProductDiscount
 
 GO
@@ -210,13 +210,13 @@ END CATCH
 
 SELECT * FROM Products
 
---6. Create a trigger named Products_UPDATE that checks the new value for the
---DiscountPercent column of the Products table. This trigger should raise an
---appropriate error if the discount percent is greater than 100 or less than 0.
-  --a. If the new discount percent is between 0 and 1, this trigger should
-  --modify the new discount percent by multiplying it by 100. That way, a
-  --discount percent of .2 becomes 20.
-  --b. Test this trigger with an appropriate UPDATE statement.
+----6. Create a trigger named Products_UPDATE that checks the new value for the
+----DiscountPercent column of the Products table. This trigger should raise an
+----appropriate error if the discount percent is greater than 100 or less than 0.
+--  --a. If the new discount percent is between 0 and 1, this trigger should
+--  --modify the new discount percent by multiplying it by 100. That way, a
+--  --discount percent of .2 becomes 20.
+--  --b. Test this trigger with an appropriate UPDATE statement.
 
 
 IF EXISTS (SELECT * FROM sys.triggers WHERE name = 'Products_UPDATE')
@@ -276,56 +276,55 @@ END
 GO
 
 INSERT Products
-VALUES(3, 'GHE-23','MIDI KEYBOARD','32 KEY MIDI CONTROLLER',200,15,NULL)
+VALUES(1, 'EDGE_PRO_5','DEAN EDGE PRO 5 BASS','5-STRING DEAN EDGE BASS', 799.98, 22.50, NULL)
 
 SELECT * FROM Products
 
---8. Create a table named ProductsAudit. This table should have all columns of
---the Products table, except the Description column. Also, it should have an
---AuditID column for its primary key, and the DateAdded column should be
---changed to DateUpdated.
-  --a. Create a trigger named Products_UPDATE. This trigger should insert the
-  --old data about the product into the ProductsAudit table after the row
-  --is updated. Then, test this trigger with an appropriate UPDATE
-  --statement.
+----8. Create a table named ProductsAudit. This table should have all columns of
+----the Products table, except the Description column. Also, it should have an
+----AuditID column for its primary key, and the DateAdded column should be
+----changed to DateUpdated.
+----  a. Create a trigger named Products_UPDATE. This trigger should insert the
+----  old data about the product into the ProductsAudit table after the row
+----  is updated. Then, test this trigger with an appropriate UPDATE
+----  statement.
 
-IF OBJECT_ID('dbo.ProductsAudit', 'U') IS NOT NULL 
-  DROP TABLE dbo.ProductsAudit; 
+--IF OBJECT_ID('ProductsAudit', 'U') IS NOT NULL 
+--  DROP TABLE ProductsAudit; 
 
-GO
-CREATE TABLE ProductsAudit(
-	AuditID			INT				PRIMARY KEY		IDENTITY,
-	ProductID		INT				REFERENCES	Products (ProductID),
-	CategoryID		INT				REFERENCES	Categories (CategoryID),
-	ProductCode		VARCHAR(10)		NOT NULL		UNIQUE,
-	ProductName		VARCHAR(255)	NOT NULL,
-	ListPrice		MONEY			NOT NULL,
-	DiscountPercent MONEY			NOT NULL		DEFAULT 0.00,
-	DateUpdated		DATETIME						DEFAULT	GETDATE()
-);
-GO
+--GO
+--CREATE TABLE ProductsAudit(
+--	AuditID			INT				PRIMARY KEY		IDENTITY,
+--	ProductID		INT				REFERENCES	Products (ProductID),
+--	CategoryID		INT				REFERENCES	Categories (CategoryID),
+--	ProductCode		VARCHAR(10)		NOT NULL		UNIQUE,
+--	ProductName		VARCHAR(255)	NOT NULL,
+--	ListPrice		MONEY			NOT NULL,
+--	DiscountPercent MONEY			NOT NULL		DEFAULT 0.00,
+--	DateUpdated		DATETIME						DEFAULT	GETDATE()
+--);
+--GO
 
-IF EXISTS (SELECT * FROM sys.triggers WHERE NAME = 'Products_UPDATE')
-	DROP TRIGGER Products_UPDATE;
+--IF EXISTS (SELECT * FROM sys.triggers WHERE NAME = 'Products_UPDATE')
+--	DROP TRIGGER Products_UPDATE;
 
-GO
-CREATE TRIGGER Products_UPDATE
-ON Products
-AFTER INSERT, UPDATE
-AS
-BEGIN
-	PRINT 'TRIGGER HIT!';
-	INSERT ProductsAudit (ProductID, CategoryID, ProductCode, ProductName, ListPrice, DiscountPercent, DateUpdated)
-	SELECT P.ProductID, P.CategoryID, P.ProductCode, P.ProductName, P.ListPrice, P.DiscountPercent, DateAdded
-		FROM Products AS P
-END
-GO
+--GO
+--CREATE TRIGGER Products_UPDATE
+--ON Products
+--AFTER INSERT, UPDATE
+--AS
+--BEGIN
+--	INSERT ProductsAudit (ProductID, CategoryID, ProductCode, ProductName, ListPrice, DiscountPercent, DateUpdated)
+--	SELECT P.ProductID, P.CategoryID, P.ProductCode, P.ProductName, P.ListPrice, P.DiscountPercent, DateAdded
+--		FROM Products AS P
+--END
+--GO
 
-INSERT Products
-VALUES(3, 'GHE-23', 'MIDI KEYBOARD', '32 KEY MIDI CONTROLLER', 200, 15, GETDATE())
+--INSERT Products
+--VALUES(4, 'MPK249', 'AKAI 49 MIDI', 'AKAI 49 KEY MIDI CONTROLLER', 399.99, 17.5, GETDATE())
 
-SELECT * FROM Products
-SELECT * FROM ProductsAudit
+--SELECT * FROM Products
+--SELECT * FROM ProductsAudit
 
 --Submitting your program -
 --You will submit this assignment on blackboard. You are allowed one submission.
