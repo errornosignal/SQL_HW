@@ -10,6 +10,9 @@ use MyGuitarShop;
 	--a. Code at least two EXEC statements that test this procedure. (Note that
 	--this table doesn’t allow duplicate category names.)
 
+IF OBJECT_ID('spInsertCategory', 'P') IS NOT NULL
+DROP PROC spInsertCategory
+
 GO
 CREATE PROCEDURE spInsertCategory
 	@CategoryName varchar(35)
@@ -23,13 +26,17 @@ GO
 EXECUTE spInsertCategory 'Brass';
 EXECUTE spInsertCategory 'Woodwinds';
 
-SELECT * FROM Categories;
+SELECT * FROM Categories
+ORDER BY CategoryID;
 
 --2. Write a script that creates and calls a function named fnDiscountPrice that
 --calculates the discount price of an item in the OrderItems table (discount
 --amount subtracted from item price). To do that, this function should accept
 --one parameter for the item ID, and it should return the value of the
 --discount price for that item.
+
+IF OBJECT_ID('fnDiscountPrice', 'FN') IS NOT NULL
+DROP PROC fnDiscountPrice
 
 GO
 CREATE FUNCTION fnDiscountPrice
@@ -65,6 +72,9 @@ SELECT * FROM @Result1
 --price multiplied by quantity). To do that, this function should accept one
 --parameter for the item ID, it should use the DiscountPrice function that you
 --created in exercise 2, and it should return the value of the total for that item.
+
+IF OBJECT_ID('fnItemTotal', 'FN') IS NOT NULL
+DROP PROC fnItemTotal
 
 GO
 CREATE FUNCTION fnItemTotal
@@ -107,6 +117,9 @@ SELECT * FROM @Result2
   --an error if the value for the DiscountPercent column is a negative number.
   --c. Code at least two EXEC statements that test this procedure.
 
+IF OBJECT_ID('spInsertProduct', 'P') IS NOT NULL
+DROP PROC spInsertProduct
+
 GO
 CREATE PROCEDURE spInsertProduct
 	(@CategoryID int, @ProductCode varchar(10), @ProductName varchar(255), @ListPrice money, @DiscountPercent money)
@@ -118,15 +131,32 @@ BEGIN
 	ELSE
 		IF @ListPrice < 0
 			THROW 51001, 'ListPrice must be non-negative.', 1;
-			RETURN;
 		IF @DiscountPercent < 0
 			THROW 51002, 'DiscountPercent must be non-negative.', 1;
-			RETURN;
 END
 GO
 
+BEGIN TRY
 EXECUTE spInsertProduct 2, 'hgh-34','Yamaha 32 MIDI',565,20;
+PRINT 'Record sucessfully added to Products Table.';
+END TRY
+BEGIN CATCH
+	PRINT 'An error occured.';
+	PRINT 'Message: ' + CONVERT(varchar, ERROR_MESSAGE());
+	IF ERROR_NUMBER() >= 50000
+		PRINT 'This is a custom error message.';
+END CATCH
+
+BEGIN TRY
 EXECUTE spInsertProduct 3,'ega-32','Ludwig Snare Drum',-320,-15
+PRINT 'Record sucessfully added to Products Table.';
+END TRY
+BEGIN CATCH
+	PRINT 'An error occured.';
+	PRINT 'Message: ' + CONVERT(varchar, ERROR_MESSAGE());
+	IF ERROR_NUMBER() >= 50000
+		PRINT 'This is a custom error message.';
+END CATCH
 
 SELECT * FROM Products
 
@@ -138,27 +168,45 @@ SELECT * FROM Products
   --stored procedure should raise an error that indicates that the value for this column must be a positive number.
   --b. Code at least two EXEC statements that test this procedure.
 
+IF OBJECT_ID('spUpdateProductDiscount', 'P') IS NOT NULL
+DROP PROC spUpdateProductDiscount
+
 GO
 CREATE PROCEDURE spUpdateProductDiscount
 	@ProductID int,
 	@DiscountPercent int
 AS
 BEGIN
-	BEGIN TRY
+	IF @DiscountPercent >= 0
 		UPDATE Products
 		SET DiscountPercent = @DiscountPercent
 		WHERE ProductID = @ProductID
-	END TRY
-	BEGIN CATCH
-		IF @DiscountPercent < 0
-			THROW 51003, 'DiscountPercent must be non-negative.', 1;
-			RETURN;
-	END CATCH
+	ELSE
+		THROW 51003, 'DiscountPercent must be non-negative.', 1;
 END;
 GO
 
+BEGIN TRY
 EXECUTE spUpdateProductDiscount 2,10
+PRINT 'Record sucessfully added to Products Table.';
+END TRY
+BEGIN CATCH
+	PRINT 'An error occured.';
+	PRINT 'Message: ' + CONVERT(varchar, ERROR_MESSAGE());
+	IF ERROR_NUMBER() >= 50000
+		PRINT 'This is a custom error message.';
+END CATCH
+
+BEGIN TRY
 EXECUTE spUpdateProductDiscount 1,-50
+PRINT 'Record sucessfully added to Products Table.';
+END TRY
+BEGIN CATCH
+	PRINT 'An error occured.';
+	PRINT 'Message: ' + CONVERT(varchar, ERROR_MESSAGE());
+	IF ERROR_NUMBER() >= 50000
+		PRINT 'This is a custom error message.';
+END CATCH
 
 SELECT * FROM Products
 
@@ -171,12 +219,66 @@ SELECT * FROM Products
   --b. Test this trigger with an appropriate UPDATE statement.
 
 
+IF EXISTS (SELECT * FROM sys.triggers WHERE name = 'Products_UPDATE')
+	DROP TRIGGER Products_UPDATE;
+
+GO
+CREATE TRIGGER Products_UPDATE ON Products
+AFTER UPDATE
+AS
+BEGIN
+	DECLARE @DiscountPercent money;
+	DECLARE @ProductID int;
+	SELECT @DiscountPercent = inserted.DiscountPercent FROM Inserted
+	SELECT @ProductID = inserted.ProductID FROM Inserted
+
+	IF UPDATE (DiscountPercent)
+		IF @DiscountPercent < 0 OR @DiscountPercent > 100
+			THROW 50005, 'DiscountPercent is out of range [>0-100]!', 1;
+		IF @DiscountPercent > 0 AND @DiscountPercent <= 100
+			IF @DiscountPercent > 0 AND @DiscountPercent < 1
+				UPDATE Products
+				SET DiscountPercent = (@DiscountPercent * 100)
+				WHERE ProductID = @ProductID
+			IF @DiscountPercent >= 1 AND @DiscountPercent <= 100
+				UPDATE Products
+				SET DiscountPercent = @DiscountPercent
+				WHERE ProductID = @ProductID
+END
+GO
+
+UPDATE Products
+SET DiscountPercent = .1234
+WHERE ProductID = 2
+
+SELECT * FROM Products
 
 --7. Create a trigger named Products_INSERT that inserts the current date for the
 --DateAdded column of the Products table if the value for that column is null.
   --a. Test this trigger with an appropriate INSERT statement.
 
+IF EXISTS (SELECT * FROM sys.triggers WHERE name = 'Products_INSERT')
+	DROP TRIGGER Products_INSERT;
 
+GO
+CREATE TRIGGER Products_INSERT ON Products
+AFTER INSERT
+AS
+BEGIN
+	DECLARE @DateAdded datetime;
+	SELECT @DateAdded = inserted.DiscountPercent FROM Inserted
+	IF UPDATE (DateAdded)
+		UPDATE Products
+		SET DateAdded = GETDATE()
+		WHERE DateAdded IS NULL OR
+			  DateAdded IN (SELECT DateAdded FROM inserted);
+END
+GO
+
+INSERT Products
+VALUES(3, 'GHE-23','MIDI KEYBOARD','32 KEY MIDI CONTROLLER',200,15,NULL)
+
+SELECT * FROM Products
 
 --8. Create a table named ProductsAudit. This table should have all columns of
 --the Products table, except the Description column. Also, it should have an
@@ -187,7 +289,43 @@ SELECT * FROM Products
   --is updated. Then, test this trigger with an appropriate UPDATE
   --statement.
 
+IF OBJECT_ID('dbo.ProductsAudit', 'U') IS NOT NULL 
+  DROP TABLE dbo.ProductsAudit; 
 
+GO
+CREATE TABLE ProductsAudit(
+	AuditID			INT				PRIMARY KEY		IDENTITY,
+	ProductID		INT				REFERENCES	Products (ProductID),
+	CategoryID		INT				REFERENCES	Categories (CategoryID),
+	ProductCode		VARCHAR(10)		NOT NULL		UNIQUE,
+	ProductName		VARCHAR(255)	NOT NULL,
+	ListPrice		MONEY			NOT NULL,
+	DiscountPercent MONEY			NOT NULL		DEFAULT 0.00,
+	DateUpdated		DATETIME						DEFAULT	GETDATE()
+);
+GO
+
+IF EXISTS (SELECT * FROM sys.triggers WHERE NAME = 'Products_UPDATE')
+	DROP TRIGGER Products_UPDATE;
+
+GO
+CREATE TRIGGER Products_UPDATE
+ON Products
+AFTER INSERT, UPDATE
+AS
+BEGIN
+	PRINT 'TRIGGER HIT!';
+	INSERT ProductsAudit (ProductID, CategoryID, ProductCode, ProductName, ListPrice, DiscountPercent, DateUpdated)
+	SELECT P.ProductID, P.CategoryID, P.ProductCode, P.ProductName, P.ListPrice, P.DiscountPercent, DateAdded
+		FROM Products AS P
+END
+GO
+
+INSERT Products
+VALUES(3, 'GHE-23', 'MIDI KEYBOARD', '32 KEY MIDI CONTROLLER', 200, 15, GETDATE())
+
+SELECT * FROM Products
+SELECT * FROM ProductsAudit
 
 --Submitting your program -
 --You will submit this assignment on blackboard. You are allowed one submission.
