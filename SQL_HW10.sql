@@ -289,42 +289,42 @@ SELECT * FROM Products
 ----  is updated. Then, test this trigger with an appropriate UPDATE
 ----  statement.
 
---IF OBJECT_ID('ProductsAudit', 'U') IS NOT NULL 
---  DROP TABLE ProductsAudit; 
+IF OBJECT_ID('ProductsAudit', 'U') IS NOT NULL 
+  DROP TABLE ProductsAudit; 
 
---GO
---CREATE TABLE ProductsAudit(
---	AuditID			INT				PRIMARY KEY		IDENTITY,
---	ProductID		INT				REFERENCES	Products (ProductID),
---	CategoryID		INT				REFERENCES	Categories (CategoryID),
---	ProductCode		VARCHAR(10)		NOT NULL		UNIQUE,
---	ProductName		VARCHAR(255)	NOT NULL,
---	ListPrice		MONEY			NOT NULL,
---	DiscountPercent MONEY			NOT NULL		DEFAULT 0.00,
---	DateUpdated		DATETIME						DEFAULT	GETDATE()
---);
---GO
+GO
+CREATE TABLE ProductsAudit(
+	AuditID			INT				PRIMARY KEY		IDENTITY,
+	ProductID		INT				REFERENCES	Products (ProductID),
+	CategoryID		INT				REFERENCES	Categories (CategoryID),
+	ProductCode		VARCHAR(10)		NOT NULL		UNIQUE,
+	ProductName		VARCHAR(255)	NOT NULL,
+	ListPrice		MONEY			NOT NULL,
+	DiscountPercent MONEY			NOT NULL		DEFAULT 0.00,
+	DateUpdated		DATETIME						DEFAULT	GETDATE()
+);
+GO
 
---IF EXISTS (SELECT * FROM sys.triggers WHERE NAME = 'Products_UPDATE')
---	DROP TRIGGER Products_UPDATE;
+IF EXISTS (SELECT * FROM sys.triggers WHERE NAME = 'Products_UPDATE')
+	DROP TRIGGER Products_UPDATE;
 
---GO
---CREATE TRIGGER Products_UPDATE
---ON Products
---AFTER INSERT, UPDATE
---AS
---BEGIN
---	INSERT ProductsAudit (ProductID, CategoryID, ProductCode, ProductName, ListPrice, DiscountPercent, DateUpdated)
---	SELECT P.ProductID, P.CategoryID, P.ProductCode, P.ProductName, P.ListPrice, P.DiscountPercent, DateAdded
---		FROM Products AS P
---END
---GO
+GO
+CREATE TRIGGER Products_UPDATE
+ON Products
+AFTER INSERT, UPDATE
+AS
+BEGIN
+	INSERT ProductsAudit (ProductID, CategoryID, ProductCode, ProductName, ListPrice, DiscountPercent, DateUpdated)
+	SELECT P.ProductID, P.CategoryID, P.ProductCode, P.ProductName, P.ListPrice, P.DiscountPercent, DateAdded
+		FROM Products AS P
+END
+GO
 
---INSERT Products
---VALUES(4, 'MPK249', 'AKAI 49 MIDI', 'AKAI 49 KEY MIDI CONTROLLER', 399.99, 17.5, GETDATE())
+INSERT Products
+VALUES(4, 'MPK249', 'AKAI 49 MIDI', 'AKAI 49 KEY MIDI CONTROLLER', 399.99, 17.5, GETDATE())
 
---SELECT * FROM Products
---SELECT * FROM ProductsAudit
+SELECT * FROM Products
+SELECT * FROM ProductsAudit
 
 --Submitting your program -
 --You will submit this assignment on blackboard. You are allowed one submission.
